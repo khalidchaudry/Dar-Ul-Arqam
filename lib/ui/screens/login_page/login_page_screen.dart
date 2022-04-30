@@ -1,4 +1,5 @@
 import 'package:darularqam/constants/constants.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../configs/configs.dart';
@@ -49,9 +50,14 @@ class _LoginPage extends State<LoginScreen> {
                   TextFormField(
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
+                      prefixIcon: const Padding(
+                          padding: EdgeInsets.only(left: 20, right: 14),
+                          child: Icon(Icons.email)),
+                      prefixIconConstraints:
+                          const BoxConstraints(maxHeight: 48, maxWidth: 48),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      hintText: 'Username',
+                      hintText: 'Email',
                       fillColor: Colors.white,
                       filled: true,
                     ),
@@ -66,6 +72,7 @@ class _LoginPage extends State<LoginScreen> {
                     height: 15,
                   ),
                   TextFormField(
+                    onChanged: (String value) {},
                     textInputAction: TextInputAction.done,
                     obscureText: _isObsecure,
                     decoration: InputDecoration(
@@ -74,6 +81,13 @@ class _LoginPage extends State<LoginScreen> {
                         hintText: 'Password',
                         fillColor: Colors.white,
                         filled: true,
+                        prefixIcon: const Padding(
+                            padding: EdgeInsets.only(left: 20, right: 14),
+                            child: Icon(
+                              Icons.lock,
+                            )),
+                        prefixIconConstraints:
+                            const BoxConstraints(maxHeight: 48, maxWidth: 48),
                         suffixIcon: IconButton(
                           icon: Icon(_isObsecure
                               ? Icons.visibility_off
@@ -95,10 +109,9 @@ class _LoginPage extends State<LoginScreen> {
                     height: 20,
                   ),
                   MaterialButton(
-                    color: const Color(0xffF9F926),
-                    minWidth: 200,
                     height: 50,
                     shape: const StadiumBorder(),
+                    color: Colors.yellow,
                     onPressed: () {
                       setState(() {
                         if (_formKey.currentState!.validate()) {
@@ -109,10 +122,42 @@ class _LoginPage extends State<LoginScreen> {
                         }
                       });
                     },
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    child: Center(
+                        child: Text(
+                      'Log in',
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.black),
+                    )),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Center(
+                    child: Text.rich(TextSpan(
+                        text: 'Already have not an account?',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(fontSize: 14, color: Colors.black),
+                        children: [
+                          TextSpan(
+                              text: ' Sign Up',
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RegisterScreen())),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.white))
+                        ])),
                   ),
                 ],
               ),

@@ -15,6 +15,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _customPageRoute(child: const HomeScreen());
     case AttendenceScreen.routeName:
       return _customPageRoute(child: const AttendenceScreen());
+    case RegisterScreen.routeName:
+      return _customPageRoute(child: const RegisterScreen());
 
     default:
       return _platformPageRoute(
