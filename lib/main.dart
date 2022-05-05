@@ -6,7 +6,12 @@ import 'ui/screens/screens.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'Dar-e-Arqam',
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,10 +20,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Dar-e-Arqam',
-      home: SplashScreen(),
-    );
+    return const Scaffold(body: SplashScreen());
   }
 }

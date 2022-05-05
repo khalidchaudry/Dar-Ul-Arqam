@@ -13,12 +13,19 @@ class _EventCalendar extends State<EventCalendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Event Calendar'),
-        backgroundColor: const Color(0xFF191581),
-      ),
-      body: SfDateRangePicker(),
-    );
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text('Event Calendar'),
+          backgroundColor: const Color(0xFF191581),
+        ),
+        body: Center(
+          child: Text(
+            'Eid Holidays: 4',
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+        ));
   }
 }

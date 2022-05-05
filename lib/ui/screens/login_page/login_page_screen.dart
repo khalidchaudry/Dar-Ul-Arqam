@@ -1,8 +1,9 @@
 import 'package:darularqam/constants/constants.dart';
-import 'package:flutter/gestures.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../../configs/configs.dart';
+
 import '../screens.dart';
 import 'widgets/login_logo_widget.dart';
 
@@ -16,8 +17,17 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginPage extends State<LoginScreen> {
   bool _isObsecure = true;
+  final emailTextController = TextEditingController();
+  final passwordTextController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  @override
+  void dispose() {
+    emailTextController.dispose();
+    passwordTextController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +58,7 @@ class _LoginPage extends State<LoginScreen> {
                     height: 35,
                   ),
                   TextFormField(
+                    controller: passwordTextController,
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
                       prefixIcon: const Padding(
@@ -72,6 +83,7 @@ class _LoginPage extends State<LoginScreen> {
                     height: 15,
                   ),
                   TextFormField(
+                    controller: emailTextController,
                     onChanged: (String value) {},
                     textInputAction: TextInputAction.done,
                     obscureText: _isObsecure,
@@ -130,34 +142,6 @@ class _LoginPage extends State<LoginScreen> {
                           fontSize: 16,
                           color: Colors.black),
                     )),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Center(
-                    child: Text.rich(TextSpan(
-                        text: 'Already have not an account?',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6!
-                            .copyWith(fontSize: 14, color: Colors.black),
-                        children: [
-                          TextSpan(
-                              text: ' Sign Up',
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RegisterScreen())),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                      color: Colors.white))
-                        ])),
                   ),
                 ],
               ),

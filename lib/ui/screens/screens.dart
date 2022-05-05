@@ -10,4 +10,3 @@ export 'test_report/test_report_screen.dart';
 export 'time_table/time_table_screen.dart';
 export 'result/result_screen.dart';
 export 'undefined/undefined_screen.dart';
-export 'register/register_screen.dart';

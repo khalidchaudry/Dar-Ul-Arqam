@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
@@ -11,13 +12,10 @@ class Application extends StatefulWidget {
 
 @override
 class _Application extends State<Application> {
+  final applicationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: MaterialButton(onPressed: () {}, child: const Text('Submit')),
-        ),
         appBar: AppBar(
           centerTitle: true,
           title: const Text('Application'),
@@ -32,17 +30,42 @@ class _Application extends State<Application> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: bGColor)),
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white),
-            child: const TextField(
-              textInputAction: TextInputAction.newline,
-              decoration: InputDecoration(
-                  hintText: 'Write your application here...',
-                  border: InputBorder.none),
-            ),
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white),
+                  child: TextField(
+                    maxLines: 200,
+                    controller: applicationController,
+                    textInputAction: TextInputAction.newline,
+                    decoration: const InputDecoration(
+                        hintText: 'Write your application here...',
+                        border: InputBorder.none),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              MaterialButton(
+                  color: Colors.white,
+                  shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  minWidth: double.infinity,
+                  height: 50,
+                  onPressed: () {
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc('ZoNy1M4xdpVGzMqI2ScQDR2QnqO2')
+                        .collection('application')
+                        .add({'application': applicationController});
+                  },
+                  child: const Text('Submit')),
+            ],
           ),
         ));
   }
