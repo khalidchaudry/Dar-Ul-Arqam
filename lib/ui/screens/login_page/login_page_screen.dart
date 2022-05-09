@@ -1,4 +1,5 @@
 import 'package:darularqam/constants/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
@@ -28,9 +29,43 @@ class _LoginPage extends State<LoginScreen> {
     super.dispose();
   }
 
+  bool _isLoading = false;
+  bool isLoginSuccess = false;
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+  _login() async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      print(emailTextController.text);
+      await _auth.signInWithEmailAndPassword(
+          email: emailTextController.text,
+          password: passwordTextController.text);
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const StudentInfo()));
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        isLoginSuccess = false;
+      });
+      final snackBar = SnackBar(
+        content: Text(e.toString()),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: SafeArea(
         child: Form(
           key: _formKey,
@@ -58,7 +93,7 @@ class _LoginPage extends State<LoginScreen> {
                     height: 35,
                   ),
                   TextFormField(
-                    controller: passwordTextController,
+                    controller: emailTextController,
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
                       prefixIcon: const Padding(
@@ -83,7 +118,7 @@ class _LoginPage extends State<LoginScreen> {
                     height: 15,
                   ),
                   TextFormField(
-                    controller: emailTextController,
+                    controller: passwordTextController,
                     onChanged: (String value) {},
                     textInputAction: TextInputAction.done,
                     obscureText: _isObsecure,
@@ -124,24 +159,28 @@ class _LoginPage extends State<LoginScreen> {
                     height: 50,
                     shape: const StadiumBorder(),
                     color: Colors.yellow,
-                    onPressed: () {
-                      setState(() {
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const StudentInfo()));
-                        }
-                      });
-                    },
+                    onPressed: _isLoading
+                        ? null
+                        : () {
+                            setState(() {
+                              if (_formKey.currentState!.validate()) {
+                                _login();
+                              }
+                            });
+                          },
                     child: Center(
-                        child: Text(
-                      'Log in',
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.black),
-                    )),
+                        child: _isLoading
+                            ? CircularProgressIndicator()
+                            : Text(
+                                'Log in',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6!
+                                    .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Colors.black),
+                              )),
                   ),
                 ],
               ),

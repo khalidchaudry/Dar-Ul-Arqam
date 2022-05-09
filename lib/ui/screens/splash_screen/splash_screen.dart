@@ -1,7 +1,9 @@
 import 'package:darularqam/configs/app_routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../login_page/login_page_screen.dart';
+import '../screens.dart';
 import 'widgets/widgets.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,9 +22,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigatetohome() async {
-    await Future.delayed(const Duration(milliseconds: 3000), () {});
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+    // await Future.delayed(const Duration(milliseconds: 3000), () {});
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    if (_auth.currentUser != null) {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const StudentInfo()));
+    } else
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
