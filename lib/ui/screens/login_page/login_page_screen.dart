@@ -172,7 +172,7 @@ class _LoginPage extends State<LoginScreen> {
                         child: _isLoading
                             ? const CircularProgressIndicator()
                             : Text(
-                                'Log in',
+                                'Login',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6!
