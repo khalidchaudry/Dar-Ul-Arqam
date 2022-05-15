@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:darularqam/constants/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AttendenceReportWidget extends StatelessWidget {
@@ -8,330 +10,117 @@ class AttendenceReportWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Table(
-            border: TableBorder.all(),
-            children: const [
-              TableRow(children: [
-                TableCell(
-                    verticalAlignment: TableCellVerticalAlignment.middle,
-                    child: Text(
-                      'Date',
-                      textAlign: TextAlign.center,
-                      style: headingTextStyle,
-                    )),
-                TableCell(
-                  verticalAlignment: TableCellVerticalAlignment.middle,
-                  child: Text(
-                    'Day',
-                    textAlign: TextAlign.center,
-                    style: headingTextStyle,
-                  ),
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('ayesha')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection('attendence')
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Center(child: Text('Something went wrong'));
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator.adaptive();
+          }
+
+          return Expanded(
+            child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
                 ),
-                TableCell(
-                    verticalAlignment: TableCellVerticalAlignment.middle,
-                    child: Text(
-                      'Present/Absent',
-                      textAlign: TextAlign.center,
-                      style: headingTextStyle,
-                    )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '20',
-                    style: headingTextStyle,
-                  ),
+                child: Column(
+                  children:
+                      snapshot.data!.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> data =
+                        document.data()! as Map<String, dynamic>;
+                    return Table(
+                      border: TableBorder.all(),
+                      children: [
+                        const TableRow(children: [
+                          TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Text(
+                                'Date',
+                                textAlign: TextAlign.center,
+                                style: headingTextStyle,
+                              )),
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Text(
+                              'Day',
+                              textAlign: TextAlign.center,
+                              style: headingTextStyle,
+                            ),
+                          ),
+                          TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Text(
+                                'Present/Absent',
+                                textAlign: TextAlign.center,
+                                style: headingTextStyle,
+                              )),
+                        ]),
+                        TableRow(children: [
+                          TableCell(
+                              child: Center(
+                            child: Text(
+                              data['date2'],
+                              style: headingTextStyle,
+                            ),
+                          )),
+                          TableCell(
+                            child: Center(
+                              child: Text(
+                                data['day2'],
+                                style: headingTextStyle,
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                              child: Center(
+                            child: Text(
+                              data['record2'],
+                              style: headingTextStyle,
+                            ),
+                          )),
+                        ]),
+                        TableRow(children: [
+                          TableCell(
+                              child: Center(
+                            child: Text(
+                              data['date'],
+                              style: headingTextStyle,
+                            ),
+                          )),
+                          TableCell(
+                            child: Center(
+                              child: Text(
+                                data['day'],
+                                style: headingTextStyle,
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                              child: Center(
+                            child: Text(
+                              data['record'],
+                              style: headingTextStyle,
+                            ),
+                          )),
+                        ]),
+                      ],
+                    );
+                  }).toList(),
                 )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Monday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'P',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '21',
-                    style: headingTextStyle,
-                  ),
-                )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Tuesday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'A',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '22',
-                    style: headingTextStyle,
-                  ),
-                )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Wednesday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'P',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '23',
-                    style: headingTextStyle,
-                  ),
-                )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Thursday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'A',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '20',
-                    style: headingTextStyle,
-                  ),
-                )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Monday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'P',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '21',
-                    style: headingTextStyle,
-                  ),
-                )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Tuesday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'A',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '22',
-                    style: headingTextStyle,
-                  ),
-                )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Wednesday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'P',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '23',
-                    style: headingTextStyle,
-                  ),
-                )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Thursday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'A',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '19',
-                    style: headingTextStyle,
-                  ),
-                )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Monday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'P',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '20',
-                    style: headingTextStyle,
-                  ),
-                )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Tuesday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'A',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '15',
-                    style: headingTextStyle,
-                  ),
-                )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Saturday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'P',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-              TableRow(children: [
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    '25',
-                    style: headingTextStyle,
-                  ),
-                )),
-                TableCell(
-                  child: Center(
-                    child: Text(
-                      'Friday',
-                      style: headingTextStyle,
-                    ),
-                  ),
-                ),
-                TableCell(
-                    child: Center(
-                  child: Text(
-                    'A',
-                    style: headingTextStyle,
-                  ),
-                )),
-              ]),
-            ],
-          )),
-    );
+          );
+        });
   }
 }

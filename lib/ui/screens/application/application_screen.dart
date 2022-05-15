@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
@@ -59,10 +60,10 @@ class _Application extends State<Application> {
                   height: 50,
                   onPressed: () {
                     FirebaseFirestore.instance
-                        .collection('users')
-                        .doc('ZoNy1M4xdpVGzMqI2ScQDR2QnqO2')
+                        .collection('ayesha')
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
                         .collection('application')
-                        .add({'application': applicationController});
+                        .add({'application': applicationController.text});
                   },
                   child: const Text('Submit')),
             ],

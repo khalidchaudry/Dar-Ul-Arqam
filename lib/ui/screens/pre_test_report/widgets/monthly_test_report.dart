@@ -82,7 +82,7 @@ class MonthlyTestReport extends StatelessWidget {
                       TableCell(
                         child: Center(
                           child: Text(
-                            data['subject'],
+                            data['subject4'],
                             style: headingTextStyle,
                           ),
                         ),
@@ -97,7 +97,7 @@ class MonthlyTestReport extends StatelessWidget {
                       TableCell(
                           child: Center(
                         child: Text(
-                          data['obtain_marks'],
+                          data['obtain_marks4'],
                           style: headingTextStyle,
                         ),
                       )),
@@ -113,7 +113,7 @@ class MonthlyTestReport extends StatelessWidget {
                       TableCell(
                         child: Center(
                           child: Text(
-                            data['subject2'],
+                            data['subject5'],
                             style: headingTextStyle,
                           ),
                         ),
@@ -128,7 +128,7 @@ class MonthlyTestReport extends StatelessWidget {
                       TableCell(
                           child: Center(
                         child: Text(
-                          data['obtain_marks2'],
+                          data['obtain_marks5'],
                           style: headingTextStyle,
                         ),
                       )),
@@ -144,7 +144,7 @@ class MonthlyTestReport extends StatelessWidget {
                       TableCell(
                         child: Center(
                           child: Text(
-                            data['subject3'],
+                            data['subject6'],
                             style: headingTextStyle,
                           ),
                         ),
@@ -159,7 +159,7 @@ class MonthlyTestReport extends StatelessWidget {
                       TableCell(
                           child: Center(
                         child: Text(
-                          data['obtain_marks3'],
+                          data['obtain_marks6'],
                           style: headingTextStyle,
                         ),
                       )),

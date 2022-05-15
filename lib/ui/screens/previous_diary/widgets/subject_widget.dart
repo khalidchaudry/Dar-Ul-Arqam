@@ -58,7 +58,7 @@ class SubjectWidget extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(data['english'],
+                  Text(data['english2'],
                       style: Theme.of(context).textTheme.bodyText2),
                   const Divider(),
                   const SizedBox(
@@ -70,7 +70,7 @@ class SubjectWidget extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(data['urdu'],
+                  Text(data['urdu2'],
                       style: Theme.of(context).textTheme.bodyText2),
                   const Divider(),
                   const SizedBox(
@@ -82,7 +82,7 @@ class SubjectWidget extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(data['math'],
+                  Text(data['math2'],
                       style: Theme.of(context).textTheme.bodyText2),
                   const Divider(),
                   const SizedBox(

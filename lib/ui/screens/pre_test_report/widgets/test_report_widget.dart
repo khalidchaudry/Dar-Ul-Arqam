@@ -56,7 +56,7 @@ class TestReportWidget extends StatelessWidget {
                               style: headingTextStyle,
                             ),
                             Text(
-                              data['month'],
+                              data['month2'],
                               style: subHeadingTextStyle,
                             ),
                           ],

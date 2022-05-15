@@ -16,6 +16,7 @@ class ResultScreen extends StatelessWidget {
         ),
         body: Container(
             height: double.infinity,
+            width: double.infinity,
             padding: const EdgeInsets.all(15),
             decoration: const BoxDecoration(
                 gradient: LinearGradient(

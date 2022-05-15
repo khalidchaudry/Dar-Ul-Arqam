@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:darularqam/constants/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ResultSheetWidget extends StatelessWidget {
@@ -8,98 +10,99 @@ class ResultSheetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Column(
-            children: [
-              DataTable(
-                headingRowColor:
-                    MaterialStateProperty.all(const Color(0xff1E90FF)),
-                columns: const [
-                  DataColumn(
-                      label: Text(
-                    'Subject',
-                    style: resultTitleColor,
-                  )),
-                  DataColumn(
-                      label: Text(
-                    'Max.\nMarks',
-                    style: resultTitleColor,
-                  )),
-                  DataColumn(
-                      label: Text(
-                    'Obt.\nMarks',
-                    style: resultTitleColor,
-                  )),
-                  DataColumn(
-                      label: Text(
-                    '%Age',
-                    style: resultTitleColor,
-                  )),
-                  DataColumn(
-                      label: Text(
-                    'Grade',
-                    style: resultTitleColor,
-                  )),
-                ],
-                rows: const [
-                  DataRow(cells: [
-                    DataCell(Text('1  Al Quran')),
-                    DataCell(Text('75')),
-                    DataCell(Text('73')),
-                    DataCell(Text('97%')),
-                    DataCell(Text('A+')),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('2  English')),
-                    DataCell(Text('100')),
-                    DataCell(Text('95')),
-                    DataCell(Text('95%')),
-                    DataCell(Text('A+')),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('3  Urdu')),
-                    DataCell(Text('100')),
-                    DataCell(Text('80')),
-                    DataCell(Text('80%')),
-                    DataCell(Text('B+')),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('4  Science')),
-                    DataCell(Text('100')),
-                    DataCell(Text('70')),
-                    DataCell(Text('70%')),
-                    DataCell(Text('B')),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('5  G.K')),
-                    DataCell(Text('100')),
-                    DataCell(Text('90')),
-                    DataCell(Text('90%')),
-                    DataCell(Text('A')),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text(
-                      'Grand Total',
-                      style: TextStyle(
-                          backgroundColor: Colors.green,
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700),
-                    )),
-                    DataCell(Text('475')),
-                    DataCell(Text('408')),
-                    DataCell(Text('86%')),
-                    DataCell(Text('A')),
-                  ]),
-                ],
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('ayesha')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection('result')
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Center(child: Text('Something went wrong'));
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator.adaptive();
+          }
+
+          return Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
               ),
-            ],
-          ),
-        ));
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    children:
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> data =
+                          document.data()! as Map<String, dynamic>;
+                      return Column(
+                        children: [
+                          DataTable(
+                            headingRowColor: MaterialStateProperty.all(
+                                const Color(0xff1E90FF)),
+                            columns: const [
+                              DataColumn(
+                                  label: Text(
+                                'Subject',
+                                style: resultTitleColor,
+                              )),
+                              DataColumn(
+                                  label: Text(
+                                'Max.\nMarks',
+                                style: resultTitleColor,
+                              )),
+                              DataColumn(
+                                  label: Text(
+                                'Obt.\nMarks',
+                                style: resultTitleColor,
+                              )),
+                              DataColumn(
+                                  label: Text(
+                                '%Age',
+                                style: resultTitleColor,
+                              )),
+                              DataColumn(
+                                  label: Text(
+                                'Grade',
+                                style: resultTitleColor,
+                              )),
+                            ],
+                            rows: [
+                              DataRow(cells: [
+                                DataCell(Text('1  ${data['subject']}')),
+                                DataCell(Text(data['max_marks'])),
+                                DataCell(Text(data['obt_marks'])),
+                                DataCell(Text(data['percentage'])),
+                                DataCell(Text(data['grade'])),
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('2  ${data['subject2']}')),
+                                DataCell(Text(data['max_marks2'])),
+                                DataCell(Text(data['obt_marks2'])),
+                                DataCell(Text(data['percentage2'])),
+                                DataCell(Text(data['grade2'])),
+                              ]),
+                              DataRow(cells: [
+                                const DataCell(Text(
+                                  'Grand Total',
+                                  style: TextStyle(
+                                      backgroundColor: Colors.green,
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700),
+                                )),
+                                DataCell(Text(data['total_marks'])),
+                                DataCell(Text(data['total_obt_marks'])),
+                                DataCell(Text(data['total_percent'])),
+                                DataCell(Text(data['final_grade'])),
+                              ]),
+                            ],
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  )));
+        });
   }
 }

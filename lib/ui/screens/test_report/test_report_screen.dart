@@ -1,3 +1,4 @@
+import 'package:darularqam/ui/screens/pre_test_report/pre_test_report_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
@@ -30,13 +31,34 @@ class _TestReport extends State<TestReport> {
                     colors: bGColor)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                TestReportWidget(),
-                SizedBox(
+              children: [
+                Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const PreTestReport()));
+                        },
+                        child: const Text(
+                          'Previous Monthly Report',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ))),
+                const SizedBox(
                   height: 20,
                 ),
-                MonthlyTestReport(),
-                RemarksWidget()
+                const TestReportWidget(),
+                const SizedBox(
+                  height: 20,
+                ),
+                const MonthlyTestReport(),
+                const RemarksWidget()
               ],
             )));
   }

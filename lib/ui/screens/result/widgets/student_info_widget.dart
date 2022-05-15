@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class StudentInfoWidget extends StatelessWidget {
@@ -5,48 +7,69 @@ class StudentInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(5)),
-      child: Column(
-        children: const [
-          InfoWidget(
-            title: 'Date:',
-            title2: '29-4-2022',
-            startIndent: 45,
-            endIndent: 190,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          InfoWidget(
-            title: 'Class Strength:',
-            title2: '20',
-            startIndent: 120,
-            endIndent: 150,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          InfoWidget(
-            title: 'No. of working days:',
-            title2: '180',
-            startIndent: 160,
-            endIndent: 110,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          InfoWidget(
-            title: 'No. of present days:',
-            title2: '80',
-            startIndent: 160,
-            endIndent: 110,
-          ),
-        ],
-      ),
-    );
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('ayesha')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection('result')
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Center(child: Text('Something went wrong'));
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator.adaptive();
+          }
+
+          return Container(
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(5)),
+              child: Column(
+                children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                  Map<String, dynamic> data =
+                      document.data()! as Map<String, dynamic>;
+                  return Column(
+                    children: [
+                      InfoWidget(
+                        title: 'Result Date:',
+                        title2: '${data['result_date']}',
+                        startIndent: 0,
+                        endIndent: 210,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      InfoWidget(
+                        title: 'Class Strength:',
+                        title2: '${data['class_strength']}:',
+                        startIndent: 120,
+                        endIndent: 150,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      InfoWidget(
+                        title: 'No. of working days:',
+                        title2: '${data['work_days']}:',
+                        startIndent: 160,
+                        endIndent: 110,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      InfoWidget(
+                        title: 'No. of present days:',
+                        title2: '${data['present_days']}:',
+                        startIndent: 160,
+                        endIndent: 110,
+                      ),
+                    ],
+                  );
+                }).toList(),
+              ));
+        });
   }
 }
 

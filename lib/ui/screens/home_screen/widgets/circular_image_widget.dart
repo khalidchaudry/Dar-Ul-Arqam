@@ -19,6 +19,7 @@ class ImageContainerWidget extends StatelessWidget {
           onPressed: press,
           child: CircleAvatar(
             radius: 43,
+            backgroundColor: Colors.white,
             backgroundImage: AssetImage(image),
           ),
         ),
@@ -27,7 +28,9 @@ class ImageContainerWidget extends StatelessWidget {
         ),
         Text(
           title,
+          textAlign: TextAlign.center,
           maxLines: 2,
+          style: const TextStyle(fontWeight: FontWeight.w400),
         ),
       ],
     );

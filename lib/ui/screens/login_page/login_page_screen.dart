@@ -32,17 +32,17 @@ class _LoginPage extends State<LoginScreen> {
   bool _isLoading = false;
   bool isLoginSuccess = false;
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   _login() async {
     try {
       setState(() {
         _isLoading = true;
       });
-      print(emailTextController.text);
+      debugPrint(emailTextController.text);
       await _auth.signInWithEmailAndPassword(
-          email: emailTextController.text,
-          password: passwordTextController.text);
+          email: emailTextController.text.trim(),
+          password: passwordTextController.text.trim());
       setState(() {
         _isLoading = false;
       });
@@ -170,7 +170,7 @@ class _LoginPage extends State<LoginScreen> {
                           },
                     child: Center(
                         child: _isLoading
-                            ? CircularProgressIndicator()
+                            ? const CircularProgressIndicator()
                             : Text(
                                 'Log in',
                                 style: Theme.of(context)
