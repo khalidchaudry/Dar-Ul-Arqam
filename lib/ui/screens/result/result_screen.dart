@@ -4,7 +4,8 @@ import '../../../constants/constants.dart';
 import 'widgets/widgets.dart';
 
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({Key? key}) : super(key: key);
+  final Map student;
+  const ResultScreen({Key? key, required this.student}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +28,25 @@ class ResultScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    StudentInfoWidget(),
-                    SizedBox(
+                  children: [
+                    StudentInfoWidget(
+                      student: student,
+                    ),
+                    const SizedBox(
                       height: 20,
                     ),
-                    ResultSheetWidget(),
-                    PercentContainerWidget(),
-                    SizedBox(
+                    ResultSheetWidget(
+                      student: student,
+                    ),
+                    PercentContainerWidget(
+                      student: student,
+                    ),
+                    const SizedBox(
                       height: 20,
                     ),
-                    TeachersRemarksWidget()
+                    TeachersRemarksWidget(
+                      student: student,
+                    )
                   ]),
             )));
   }

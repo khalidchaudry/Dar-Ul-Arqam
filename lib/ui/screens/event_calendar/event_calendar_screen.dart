@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class EventCalendar extends StatefulWidget {
-  const EventCalendar({Key? key}) : super(key: key);
+  final Map<String, dynamic> child;
+  const EventCalendar({Key? key, required this.child}) : super(key: key);
 
   @override
   State<EventCalendar> createState() => _EventCalendar();
@@ -16,17 +17,32 @@ class _EventCalendar extends State<EventCalendar> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('ayesha')
+            .collection('parents')
             .doc(FirebaseAuth.instance.currentUser!.uid)
-            .collection('event')
+            .collection('childs')
+            .doc(widget.child['s_id'])
+            .collection('events')
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return const Center(child: Text('Something went wrong'));
+            return Scaffold(
+                appBar: AppBar(
+                  centerTitle: true,
+                  title: const Text('Event Calendar'),
+                  backgroundColor: const Color(0xFF191581),
+                ),
+                body: const Center(child: Text('Something went wrong')));
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator.adaptive();
+            return Scaffold(
+                appBar: AppBar(
+                  centerTitle: true,
+                  title: const Text('Event Calendar'),
+                  backgroundColor: const Color(0xFF191581),
+                ),
+                body:
+                    const Center(child: CircularProgressIndicator.adaptive()));
           }
 
           return Scaffold(

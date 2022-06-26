@@ -4,16 +4,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PrepToMetricTimeTableWidget extends StatelessWidget {
-  const PrepToMetricTimeTableWidget({
-    Key? key,
-  }) : super(key: key);
+  const PrepToMetricTimeTableWidget({Key? key, required this.student})
+      : super(key: key);
+
+  final Map student;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('ayesha')
+            .collection('parents')
             .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection('childs')
+            .doc(student['s_id'])
             .collection('time_table')
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

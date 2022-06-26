@@ -11,10 +11,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _customPageRoute(child: const SplashScreen());
     case LoginScreen.routeName:
       return _customPageRoute(child: const LoginScreen());
-    case HomeScreen.routeName:
-      return _customPageRoute(child: const HomeScreen());
-    case AttendenceScreen.routeName:
-      return _customPageRoute(child: const AttendenceScreen());
 
     default:
       return _platformPageRoute(

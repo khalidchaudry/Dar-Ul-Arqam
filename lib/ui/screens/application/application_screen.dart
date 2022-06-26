@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import '../../../constants/constants.dart';
 
 class Application extends StatefulWidget {
-  const Application({Key? key}) : super(key: key);
+  final Map<String, dynamic> child;
+  const Application({Key? key, required this.child}) : super(key: key);
 
   @override
   State<Application> createState() => _Application();
@@ -13,6 +14,8 @@ class Application extends StatefulWidget {
 
 @override
 class _Application extends State<Application> {
+  bool _submitting = false;
+
   final applicationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -44,6 +47,7 @@ class _Application extends State<Application> {
                     controller: applicationController,
                     textInputAction: TextInputAction.newline,
                     decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(20),
                         hintText: 'Write your application here...',
                         border: InputBorder.none),
                   ),
@@ -52,20 +56,41 @@ class _Application extends State<Application> {
               const SizedBox(
                 height: 20,
               ),
-              MaterialButton(
-                  color: Colors.white,
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  minWidth: double.infinity,
-                  height: 50,
-                  onPressed: () {
-                    FirebaseFirestore.instance
-                        .collection('ayesha')
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection('application')
-                        .add({'application': applicationController.text});
-                  },
-                  child: const Text('Submit')),
+              if (_submitting) CircularProgressIndicator(),
+              if (!_submitting)
+                MaterialButton(
+                    color: Colors.white,
+                    shape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    minWidth: double.infinity,
+                    height: 50,
+                    onPressed: () async {
+                      try {
+                        setState(() {
+                          _submitting = true;
+                        });
+                        await FirebaseFirestore.instance
+                            .collection('parents')
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .collection('childs')
+                            .doc(widget.child['s_id'])
+                            .collection('application')
+                            .add({'application': applicationController.text});
+                        setState(() {
+                          _submitting = false;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Application submitted')));
+                        applicationController.clear();
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content:
+                                    Text('Something went wrong try again')));
+                      }
+                    },
+                    child: const Text('Submit')),
             ],
           ),
         ));

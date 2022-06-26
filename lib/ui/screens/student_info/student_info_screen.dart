@@ -36,9 +36,9 @@ class _StudentInfo extends State<StudentInfo> {
       FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
       QuerySnapshot querySnapshot = await firebaseFirestore
-          .collection('ayesha')
+          .collection('parents')
           .doc(_auth.currentUser!.uid)
-          .collection('student_info')
+          .collection('childs')
           .get();
       List<QueryDocumentSnapshot> _list = querySnapshot.docs;
       if (_list.isNotEmpty) {
@@ -67,114 +67,126 @@ class _StudentInfo extends State<StudentInfo> {
         body: Container(
           height: double.infinity,
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           decoration: const BoxDecoration(
               gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: bGColor,
           )),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: child
-                  .map(
-                    (data) => Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 60),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: const Offset(0, 10),
-                              blurRadius: 20,
-                              color: Colors.white.withOpacity(.5),
+          child: SingleChildScrollView(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: child
+                    .map(
+                      (data) => Container(
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              // BoxShadow(
+                              //   offset: const Offset(0, 10),
+                              //   blurRadius: 20,
+                              //   color: Colors.white.withOpacity(.5),
+                              // ),
+                            ]),
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 10,
                             ),
-                          ]),
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Image.asset(AppAssets.user),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            height: 40,
-                            width: 200,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: const Color(0xffF9F926)),
-                            child: const Text(
-                              'Student Information',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            // Align(
+                            //   alignment: Alignment.topLeft,
+                            //   child: Image.asset(
+                            //     AppAssets.user,
+                            //     height: 60,
+                            //   ),
+                            // ),
+                            // Container(
+                            //   alignment: Alignment.center,
+                            //   height: 40,
+                            //   decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(20),
+                            //       color: const Color(0xffF9F926)),
+                            //   child: const Text(
+                            //     'Student Information',
+                            //     style: TextStyle(
+                            //         fontSize: 15, fontWeight: FontWeight.bold),
+                            //   ),
+                            // ),
+                            const SizedBox(
+                              height: 10,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            children: [
-                              const Text(
-                                'Name',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              const Spacer(),
-                              Text(data['name']),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 7,
-                          ),
-                          Row(
-                            children: [
-                              const Text(
-                                'RollNo#',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              const Spacer(),
-                              Text(data['roll_no']),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 7,
-                          ),
-                          Row(
-                            children: [
-                              const Text(
-                                'Class',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              const Spacer(),
-                              Text(data['class']),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          ElevatedButton(
-                              style: TextButton.styleFrom(
-                                  backgroundColor: const Color(0xffF9F926)),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const HomeScreen()));
-                              },
-                              child: const Text(
-                                'Next',
-                                style: TextStyle(color: Colors.black),
-                              )),
-                        ],
+                            Row(
+                              children: [
+                                const Text(
+                                  'Name',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const Spacer(),
+                                Text(data['s_name']),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 7,
+                            ),
+                            Row(
+                              children: [
+                                const Text(
+                                  'RollNo#',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const Spacer(),
+                                Text(data['roll_no']),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 7,
+                            ),
+                            Row(
+                              children: [
+                                const Text(
+                                  'Class',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const Spacer(),
+                                Text(data['class']),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: ElevatedButton(
+                                  style: TextButton.styleFrom(
+                                      backgroundColor: const Color(0xffF9F926)),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => HomeScreen(
+                                                  student: data,
+                                                )));
+                                  },
+                                  child: const Text(
+                                    'Next',
+                                    style: TextStyle(color: Colors.black),
+                                  )),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                  .toList()),
+                    )
+                    .toList()),
+          ),
         ));
   }
 }

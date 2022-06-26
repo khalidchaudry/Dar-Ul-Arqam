@@ -3,14 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class StudentInfoWidget extends StatelessWidget {
-  const StudentInfoWidget({Key? key}) : super(key: key);
+  final Map student;
+  const StudentInfoWidget({Key? key, required this.student}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('ayesha')
+            .collection('parents')
             .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection('childs')
+            .doc(student['s_id'])
             .collection('result')
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -19,7 +22,7 @@ class StudentInfoWidget extends StatelessWidget {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator.adaptive();
+            return const SizedBox();
           }
 
           return Container(

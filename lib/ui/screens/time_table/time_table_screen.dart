@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import '../../../constants/constants.dart';
 
 class TimeTable extends StatefulWidget {
-  const TimeTable({Key? key}) : super(key: key);
+  final Map student;
+  const TimeTable({Key? key, required this.student}) : super(key: key);
 
   @override
   State<TimeTable> createState() => _TimeTable();
@@ -31,12 +32,16 @@ class _TimeTable extends State<TimeTable> {
                   colors: bGColor)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              PlayToNurseryTimeTableWidget(),
-              SizedBox(
+            children: [
+              PlayToNurseryTimeTableWidget(
+                student: widget.student,
+              ),
+              const SizedBox(
                 height: 20,
               ),
-              PrepToMetricTimeTableWidget()
+              PrepToMetricTimeTableWidget(
+                student: widget.student,
+              )
             ],
           ),
         ));

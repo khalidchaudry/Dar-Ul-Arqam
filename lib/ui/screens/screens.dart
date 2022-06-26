@@ -10,3 +10,5 @@ export 'test_report/test_report_screen.dart';
 export 'time_table/time_table_screen.dart';
 export 'result/result_screen.dart';
 export 'undefined/undefined_screen.dart';
+export 'fee_voucher/fee_voucher_screen.dart';
+export 'reports/reposrts_screen.dart';
